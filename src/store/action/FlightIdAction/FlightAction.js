@@ -9,7 +9,7 @@ export const createFlightId = (flightId) => {
       { data: flightId },
       {}, dispatch, null)
      .then(response => {
-       dispatch({type: BCSCAN.CREATE_FLIGHT_ID});
+       dispatch({type: BCSCAN.CREATE_FLIGHT_ID, data: response});
        history.push('/barcode-scan');
      })
      .catch(() => {});

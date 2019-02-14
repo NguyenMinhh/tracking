@@ -15,6 +15,12 @@ class FlightIdContainer extends Component {
     })
   }
 
+  handleKeyPress = (event) => {
+    if(event.key === 'Enter'){
+      this.props.createFlightId(this.state.flightId)
+    }
+  }
+
   render(){
     return(
       <div>
@@ -22,7 +28,8 @@ class FlightIdContainer extends Component {
         <FormGroup>
           <Label for="exampleEmail">Mã chuyến bay:</Label>
           <Input id="flightId" placeholder="Mã chuyến bay"
-                 onChange={this.onChangeFlightId} value={this.state.flightId}/>
+                 onChange={this.onChangeFlightId} value={this.state.flightId}
+                 onKeyPress={this.handleKeyPress}/>
           <Button color="primary" onClick={() => this.props.createFlightId(this.state.flightId)}>Tạo</Button>
         </FormGroup>
 

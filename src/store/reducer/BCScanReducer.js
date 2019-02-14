@@ -1,6 +1,7 @@
 import {BCSCAN} from '../Constant'
 const initialState = {
   flightId : "",
+  customerId : "",
 }
 
 const barcodeScanReducer = (state = initialState, action) => {
@@ -9,6 +10,12 @@ const barcodeScanReducer = (state = initialState, action) => {
       return {
         ...state,
         flightId : action.data
+      }
+
+    case BCSCAN.SELECT_CUSTOMER_ID:
+      return {
+        ...state,
+        customerId : action.data
       }
 
     default:
