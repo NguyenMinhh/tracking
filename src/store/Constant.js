@@ -1,0 +1,3 @@
+export const BCSCAN = {
+  CREATE_FLIGHT_ID : "BCSCAN_CREATE_FLIGHT_ID"
+}
