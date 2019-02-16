@@ -8,6 +8,10 @@ class CustomerSelect extends Component {
     selectedOption: null,
   }
 
+  componentDidMount(){
+    this.props.onChangeCustomerOfProduct("EMPTY_CUSTOMER");
+  }
+
   handleChange = (selectedOption) => {
     if(selectedOption){
       this.props.onChangeCustomerOfProduct(selectedOption.name);

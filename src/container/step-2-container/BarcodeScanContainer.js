@@ -37,9 +37,9 @@ class BarcodeScanContainer extends Component {
 
   handleScanFinished = async (event) => {
     if(event.key === 'Enter'){
-      const codeInp = event.target.value;
-      const codeReturn = await this.props.addTracking(this.props.flightId, this.props.customerId, codeInp);
-      if(codeReturn === codeInp){
+      const codeReturn = await this.props.addTracking(this.props.flightId, this.props.customerId, this.state.trackingId);
+
+      if(codeReturn.toString() === this.state.trackingId){
         this.setState({
           trackingId: ""
         })

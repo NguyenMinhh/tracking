@@ -1,7 +1,7 @@
 import {BCSCAN} from '../Constant'
 const initialState = {
   flightId : "",
-  customerId : "",
+  customerId : "EMPTY_CUSTOMER",
   lstTracking : [],
 }
 
