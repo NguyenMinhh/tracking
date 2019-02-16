@@ -10,11 +10,10 @@ class CustomerSelect extends Component {
 
   handleChange = (selectedOption) => {
     if(selectedOption){
-      this.props.onChangeCustomerOfProduct(selectedOption._id);
+      this.props.onChangeCustomerOfProduct(selectedOption.name);
     }else{
       this.props.onChangeCustomerOfProduct("EMPTY_CUSTOMER");
     }
-
   }
 
 
@@ -26,13 +25,8 @@ class CustomerSelect extends Component {
         placeholder={'Chọn khách hàng'}
         options={this.props.data}
         onChange={this.handleChange}
-        getOptionLabel={option => option._id}
+        getOptionLabel={option => option.name}
         getOptionValue={option => option.name}
-        getNewOptionData={(inputValue, optionLabel) => ({
-          _id: optionLabel,
-          name: inputValue,
-          __isNew__: true
-        })}
       />
 
     );

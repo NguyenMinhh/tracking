@@ -46,3 +46,14 @@ export const addTracking = (flightId, customerId, trackingId) => {
      return barcodeReturn;
   }
 }
+
+export const getAllWaybillData = () => {
+  return dispatch => {
+    Service.getAPI('show-all-waybill',
+      {}, dispatch, null)
+     .then(response => {
+       dispatch({type: BCSCAN.GET_LIST_TRACKING, data: response});
+     })
+     .catch(() => {});
+  }
+}

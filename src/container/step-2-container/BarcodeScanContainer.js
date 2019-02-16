@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, Label, Input } from 'reactstrap';
+import { FormGroup, Label, Input, Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import history from '../../history';
 import * as FlightAction from '../../store/action/FlightIdAction/FlightAction';
@@ -47,11 +47,15 @@ class BarcodeScanContainer extends Component {
     }
   }
 
+  showWaybillInf = () => {
+    history.push('/waybill-check');
+  }
+
   render(){
     return(
       <div>
         <h1>Scan:</h1>
-        <h3>Mã Chuyến bay: {this.props.trackingId}</h3>
+        <h4>Mã Chuyến bay: {this.props.flightId}</h4>
         <CustomerSelect data={this.state.customerData}/>
 
         <FormGroup>
@@ -60,6 +64,8 @@ class BarcodeScanContainer extends Component {
                  onChange={this.onChangeTrackingId} value={this.state.trackingId}
                  onKeyPress={this.handleScanFinished}/>
         </FormGroup>
+
+        <Button color="primary" onClick={() => this.showWaybillInf()}>Kiểm tra vận đơn</Button>
       </div>
     )
   }
