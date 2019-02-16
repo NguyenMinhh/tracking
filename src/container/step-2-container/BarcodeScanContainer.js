@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { FormGroup, Label, Input } from 'reactstrap';
 import { connect } from 'react-redux';
 import history from '../../history';
 import * as FlightAction from '../../store/action/FlightIdAction/FlightAction';
 import CustomerSelect from '../../components/customer/customer-select';
 
-const test = [{label: "KH1", value: "KH1"},{label: "KH2", value: "KH2"}]
 
 class BarcodeScanContainer extends Component {
 
@@ -18,6 +17,16 @@ class BarcodeScanContainer extends Component {
 
   state = {
     trackingId : "",
+    customerData : [],
+  }
+
+  async componentDidMount(){
+    if(this.props.flightId && this.props.flightId.trim() !== "" ){
+      const _customerData = await this.props.getCustomerData();
+      this.setState({
+        customerData : _customerData
+      });
+    }
   }
 
   onChangeTrackingId = (e) => {
@@ -26,9 +35,15 @@ class BarcodeScanContainer extends Component {
     })
   }
 
-  handleScanFinished = (event) => {
-    if(event.key == 'Enter'){
-      console.log('enter press here! ')
+  handleScanFinished = async (event) => {
+    if(event.key === 'Enter'){
+      const codeInp = event.target.value;
+      const codeReturn = await this.props.addTracking(this.props.flightId, this.props.customerId, codeInp);
+      if(codeReturn === codeInp){
+        this.setState({
+          trackingId: ""
+        })
+      }
     }
   }
 
@@ -37,7 +52,7 @@ class BarcodeScanContainer extends Component {
       <div>
         <h1>Scan:</h1>
         <h3>Mã Chuyến bay: {this.props.trackingId}</h3>
-        <CustomerSelect data={test}/>
+        <CustomerSelect data={this.state.customerData}/>
 
         <FormGroup>
           <Label for="exampleEmail">Mã chuyến bay:</Label>
@@ -59,7 +74,8 @@ const mapStateToProps = state => {
 
 const dispatchToProps = dispatch => {
   return {
-
+    getCustomerData : () => dispatch(FlightAction.getCustomerData()),
+    addTracking : (flightId, customerId, trackingId) => dispatch(FlightAction.addTracking(flightId, customerId, trackingId)),
   };
 }
 

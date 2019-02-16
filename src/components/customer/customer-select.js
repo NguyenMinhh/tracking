@@ -1,70 +1,47 @@
-import Select, { components } from 'react-select';
-import React, {Component, Fragment} from 'react';
+import CreatableSelect from "react-select/lib/Creatable";
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-const Option = (props) => {
-  return (
-      <Fragment>
-        <components.Option {...props}>
-          {props.label}
-        </components.Option>
-      </Fragment>
 
-  );
-};
-
-class CustomerSelect extends Component<*, State> {
+class CustomerSelect extends Component {
   state = {
     selectedOption: null,
   }
 
-  componentDidMount(){
-    if(this.props.defaultValue !== undefined &&
-        this.props.defaultValue !== '' && this.props.defaultValue !== null){
-        this.setState({ selectedOption : this.props.defaultValue});
-    }
-  }
-
   handleChange = (selectedOption) => {
-    if(selectedOption.length === 0){
-      this.setState({ selectedOption : null });
-      this.props.onChangeCustomerOfProduct("UNKNOWN");
+    if(selectedOption){
+      this.props.onChangeCustomerOfProduct(selectedOption._id);
     }else{
-      this.setState({ selectedOption });
-      this.props.onChangeCustomerOfProduct(selectedOption.value);
+      this.props.onChangeCustomerOfProduct("EMPTY_CUSTOMER");
     }
+
   }
 
-  ValueContainer = ({ children, ...props }) => {
-    return(
-      <components.ValueContainer {...props}>
-        {children}
-      </components.ValueContainer>
-    )
-  };
 
   render() {
-    const { selectedOption } = this.state;
-    const ValueContainer = this.ValueContainer;
-
     return (
-      <Select
-        components={{ Option , ValueContainer }}
-        value={selectedOption}
+      <CreatableSelect
+        isClearable
+        isCreatable={true}
         placeholder={'Chọn khách hàng'}
-        onChange={this.handleChange}
         options={this.props.data}
-        styles={{
-          valueContainer: (base) => ({ ...base, background: '#fff', color: 'white', width: '100%' }),
-        }}
+        onChange={this.handleChange}
+        getOptionLabel={option => option._id}
+        getOptionValue={option => option.name}
+        getNewOptionData={(inputValue, optionLabel) => ({
+          _id: optionLabel,
+          name: inputValue,
+          __isNew__: true
+        })}
       />
+
     );
   }
 }
 
 const dispatchToProps = dispatch => {
   return {
-		onChangeCustomerOfProduct : (value) => dispatch({type: 'BCSCAN_SELECT_CUSTOMER_ID', data : value }),
+		onChangeCustomerOfProduct : (id) => dispatch({type: 'BCSCAN_SELECT_CUSTOMER_ID', data : id }),
   };
 }
 

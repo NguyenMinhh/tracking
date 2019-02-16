@@ -15,3 +15,34 @@ export const createFlightId = (flightId) => {
      .catch(() => {});
   }
 }
+
+export const getCustomerData = () => {
+  return async dispatch => {
+    let lstCustomer = [];
+    await Service.getAPI('get-customer',
+      {}, dispatch, null)
+     .then(response => {
+       lstCustomer = response;
+     })
+     .catch(() => {});
+     return lstCustomer;
+  }
+}
+
+export const addTracking = (flightId, customerId, trackingId) => {
+  return async dispatch => {
+    let barcodeReturn = "";
+    const _data = {
+      flightId: flightId,
+      customerId: customerId,
+      barcode: trackingId
+    }
+    await Service.postAPI('scan',
+      { data: _data },{}, dispatch, null)
+     .then(response => {
+       barcodeReturn = response;
+     })
+     .catch(() => {});
+     return barcodeReturn;
+  }
+}
