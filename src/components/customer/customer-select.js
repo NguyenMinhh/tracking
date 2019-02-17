@@ -18,8 +18,19 @@ class CustomerSelect extends Component {
     }else{
       this.props.onChangeCustomerOfProduct("EMPTY_CUSTOMER");
     }
+    document.getElementById("trackId").focus();
   }
 
+  onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    switch (event.key) {
+      case 'Enter':
+        document.getElementById("trackId").focus();
+        break;
+        
+      default:
+        break;
+    }
+  }
 
   render() {
     return (
@@ -29,6 +40,7 @@ class CustomerSelect extends Component {
         placeholder={'Chọn khách hàng'}
         options={this.props.data}
         onChange={this.handleChange}
+        onKeyDown={this.onKeyDown}
         getOptionLabel={option => option.name}
         getOptionValue={option => option.name}
       />

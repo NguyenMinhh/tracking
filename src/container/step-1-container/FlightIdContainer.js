@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Label, Input, Badge,Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import * as FlightAction from '../../store/action/FlightIdAction/FlightAction';
 
@@ -7,6 +7,10 @@ class FlightIdContainer extends Component {
 
   state = {
     flightId : "",
+  }
+
+  componentDidMount(){
+    document.getElementById("flightId").focus();
   }
 
   onChangeFlightId = (e) => {
@@ -23,17 +27,20 @@ class FlightIdContainer extends Component {
 
   render(){
     return(
-      <div>
-        <h1>Tạo chuyến bay:</h1>
-        <FormGroup>
-          <Label for="exampleEmail">Mã chuyến bay:</Label>
-          <Input id="flightId" placeholder="Mã chuyến bay"
-                 onChange={this.onChangeFlightId} value={this.state.flightId}
-                 onKeyPress={this.handleKeyPress}/>
-          <Button color="primary" onClick={() => this.props.createFlightId(this.state.flightId)}>Tạo</Button>
-        </FormGroup>
+      <Container>
+        <h1 style={{marginLeft : 'auto', marginRight: 'auto', textAlign : 'center'}}><Badge color="light">TẠO CHUYẾN BAY</Badge></h1>
 
-      </div>
+        <Row>
+          <Col xs="auto"><Label for="Flight">Mã chuyến bay:</Label></Col>
+          <Col xs="9"><Input id="flightId" placeholder="Mã chuyến bay"
+                 onChange={this.onChangeFlightId} value={this.state.flightId}
+                 onKeyPress={this.handleKeyPress}/></Col>
+          <Col xs="auto">
+            <Button color="primary" onClick={() => this.props.createFlightId(this.state.flightId)}>Tạo</Button>
+          </Col>
+        </Row>
+
+      </Container>
     )
   }
 }

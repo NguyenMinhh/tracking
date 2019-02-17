@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, Label, Input, Button } from 'reactstrap';
+import { FormGroup, Label, Input, Button, Badge,Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import history from '../../history';
 import * as FlightAction from '../../store/action/FlightIdAction/FlightAction';
@@ -36,7 +36,7 @@ class BarcodeScanContainer extends Component {
   }
 
   handleScanFinished = async (event) => {
-    if(event.key === 'Enter'){
+    if(event.key === 'Enter' && this.state.trackingId.toString().trim() !== ""){
       const codeReturn = await this.props.addTracking(this.props.flightId, this.props.customerId, this.state.trackingId);
 
       if(codeReturn.toString() === this.state.trackingId){
@@ -44,6 +44,8 @@ class BarcodeScanContainer extends Component {
           trackingId: ""
         })
       }
+    }else if(event.key === 'Enter' && this.state.trackingId.toString().trim() === ""){
+      window.alert("Vui lòng nhập mã vận đơn!");
     }
   }
 
@@ -51,22 +53,49 @@ class BarcodeScanContainer extends Component {
     history.push('/waybill-check');
   }
 
+  createNewFlightId = () => {
+    history.push('/create-flight-id');
+  }
+
+  backToHomePage = () => {
+    history.push('/');
+  }
+
   render(){
     return(
-      <div>
-        <h1>Scan:</h1>
+      <Container>
+        <h1 style={{marginLeft : 'auto', marginRight: 'auto', textAlign : 'center'}}>
+          <Badge color="light">Scan</Badge>
+        </h1>
         <h4>Mã Chuyến bay: {this.props.flightId}</h4>
-        <CustomerSelect data={this.state.customerData}/>
 
-        <FormGroup>
-          <Label for="exampleEmail">Mã chuyến bay:</Label>
-          <Input id="TrackId" placeholder="Mã tracking"
-                 onChange={this.onChangeTrackingId} value={this.state.trackingId}
-                 onKeyPress={this.handleScanFinished}/>
-        </FormGroup>
+        <Row>
+          <Col xs="2">
+            <Label for="Customer">Mã khách hàng:</Label>
+          </Col>
+          <Col xs="9">
+            <CustomerSelect data={this.state.customerData}/>
+          </Col>
+        </Row>
 
-        <Button color="primary" onClick={() => this.showWaybillInf()}>Kiểm tra vận đơn</Button>
-      </div>
+        <Row>
+          <Col xs="2">
+            <Label for="TrackingCode">Tracking:</Label>
+          </Col>
+
+          <Col xs="9">
+            <Input id="trackId" placeholder="Mã tracking"
+                   onChange={this.onChangeTrackingId} value={this.state.trackingId}
+                   onKeyPress={this.handleScanFinished}/>
+          </Col>
+        </Row>
+
+        <div style={{marginLeft : 'auto', marginRight: 'auto', textAlign : 'center', marginTop: '10%'}}>
+          <Button color="primary" onClick={() => this.backToHomePage()}>Trở về trang chủ</Button>{' '}
+          <Button color="primary" onClick={() => this.createNewFlightId()}>Tạo mới chuyến bay</Button>{' '}
+          <Button color="primary" onClick={() => this.showWaybillInf()}>Kiểm tra vận đơn</Button>
+        </div>
+      </Container>
     )
   }
 }
